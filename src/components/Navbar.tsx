@@ -1,5 +1,6 @@
 "use client"
-import { useSession } from "next-auth/react";
+import { LogOut } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -10,6 +11,7 @@ const Navbar = () => {
                 shorten.
                 </Link>
                {session.data?
+               <div className="flex gap-3 items-center">
                   
            
                 <Link href={'/my-urls'} className=" flex items-center gap-3 hover:underline underline-offset-4">
@@ -20,6 +22,9 @@ const Navbar = () => {
                     <img src={session.data?.user.image ?? ""} className="rounded-full w-7 h-7" alt="pfp" />
                 </div>
                 </Link>
+
+                <LogOut className="cursor-pointer" onClick={()=>signOut()} />
+                </div>
         : <></>
                 }
         </div>

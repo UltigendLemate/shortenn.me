@@ -2,6 +2,7 @@
 import { notFound, permanentRedirect, redirect, useRouter } from "next/navigation";
 import { type Url } from "../../components/Shortener";
 import { NextResponse } from "next/server";
+import axios from "axios";
 
 
 export default async function SlugPage({ params }: { params: { slug: string } }) {
@@ -10,16 +11,18 @@ export default async function SlugPage({ params }: { params: { slug: string } })
     try {
         console.log(params.slug)
         console.log(`${process.env.NEXT_PUBLIC_URL}/api/getURLfromSlug`)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getURLfromSlug`, {
-            method: 'POST',
-            body: JSON.stringify({ slug: params.slug }),
-            cache: "no-store",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        // const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getURLfromSlug`, {
+        //     method: 'POST',
+        //     body: JSON.stringify({ slug: params.slug }),
+        //     cache: "no-store",
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_URL}/api/getURLfromSlug`, { slug: params.slug });
         console.log("api called \n\n\n")
-        const resJson = await res.json() as Url;
+        console.log(res);
+        const resJson = res.data as Url;
         console.log(resJson)
         if (!resJson) {
             notFound();

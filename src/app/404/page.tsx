@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 
 const page = () => {
-  return <div>page</div>
+  return <div>asdfasdfsd</div>
 }
 
 export default page
