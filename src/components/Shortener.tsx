@@ -104,7 +104,7 @@ const Shortener = () => {
 
 
     return <div className='gap-3 grid mx-3 w-full max-w-2xl'>
-        <h2 className='text-3xl font-semibold'>Shorten a long URL</h2>
+        <h2 className=' text-2xl md:text-3xl font-semibold'>Shorten a long URL</h2>
         <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
 
             <input type="text" placeholder='Paste the long URL' className={`outline-none  px-4 py-2 bg-opacity-30 bg-pink-300 font-medium rounded-lg text-white w-full
@@ -121,7 +121,7 @@ const Shortener = () => {
             <div className='flex justify-between mt-2 md:mt=0 gap-5 items-end '>
                 <div className=''>
                     <label htmlFor="slug" className='block py-2 font-medium'>Domain</label>
-                    <input id='slug' disabled type="text" className='text-white w-full px-3 py-1 rounded-md outline-none' value="short.ly"
+                    <input id='slug' disabled type="text" className='text-white w-full px-2.5 py-1 rounded-md outline-none' value="shortenn.me"
                     />
 
                 </div>

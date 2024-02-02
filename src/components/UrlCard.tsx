@@ -97,7 +97,7 @@ const UrlCard: FC<Url> = ({ url, slug, createdAt }) => {
 
   return (
     <>
-      <div className='p-5 rounded-md bg-gradient-to-tr from-purple-700 to-pink-600 '>
+      <div className='p-5 max-w-full overflow-hidden rounded-md bg-gradient-to-tr from-purple-700 to-pink-600 '>
         <div className='text-2xl flex justify-between'>
           <div className='flex items-end gap-6 text-ellipsis'>
             <a href={`${process.env.NEXT_PUBLIC_URL}/${slug}`}>
@@ -113,7 +113,7 @@ const UrlCard: FC<Url> = ({ url, slug, createdAt }) => {
           </div>
         </div>
         <div className=' mt-3  '>
-          <Link href={url} className='underline block truncate text-white underline-offset-4'>
+          <Link href={url} className='underline  block truncate text-white underline-offset-4'>
             {url}
           </Link>
         </div>
@@ -122,9 +122,9 @@ const UrlCard: FC<Url> = ({ url, slug, createdAt }) => {
         backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        placement="top-center"
+        placement="center"
         classNames={{
-          base: "bg-pink-200 rounded-md"
+          base: "bg-pink-200 rounded-md mx-5 md:mx-0",
         }}
 
       >

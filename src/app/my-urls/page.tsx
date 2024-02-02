@@ -21,7 +21,7 @@ const page = async ({searchParams} : {searchParams : {page? : string}}) => {
     if (!result) return notFound();
     const totalLinks = await totalUrls(session.user.id);
     return <main className="pt-28 bg-gradient-to-b from-[#2e026d] to-[#15162c] min-h-screen text-white">
-    <div className="grid grid-cols-3 gap-10 container">
+    <div className="grid md:grid-cols-3 gap-10  container">
       {result.map((link) => {
         return <UrlCard key={link.id} {...link} />
       })

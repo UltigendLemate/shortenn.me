@@ -6,9 +6,9 @@ import Link from "next/link";
 const Navbar = () => {
     const session = useSession();
     return (
-        <div className="text-pink-200 absolute w-full font-semibold bg-gradient-to-t from-[#2e026d] to-purple-900 flex justify-between px-12 py-4 text-2xl">
+        <div className="text-pink-200 absolute w-full font-semibold bg-gradient-to-t from-[#2e026d] to-purple-900 flex justify-between px-4 md:px-12 py-4 text-2xl">
             <Link href={'/'}>
-                shorten.
+                shortenn.
                 </Link>
                {session.data?
                <div className="flex gap-3 items-center">
