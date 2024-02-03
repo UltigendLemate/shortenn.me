@@ -26,7 +26,7 @@ const PaginationComponent: FC<PaginationProps> = ({ currentPage, totalLinks, lin
     // }, [searchParams])
 
     return (
-        <div className='flex overflow-x-hidden mt-20 justify-center' key={currentPage}>
+        <div className='flex overflow-x-hidden mt-20 justify-center' key={currentPage + totalLinks}>
     <Pagination 
     classNames={{
         base : "overflow-x-hidden my-1",
