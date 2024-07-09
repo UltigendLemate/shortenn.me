@@ -4,9 +4,9 @@ import { env } from "~/env.js";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  driver: "pg",
+  dialect: "postgresql",
   dbCredentials: {
-    connectionString: env.DATABASE_URL,
+    url: env.DATABASE_URL,
   },
   tablesFilter: ["url-shortener_*"],
 } satisfies Config;
