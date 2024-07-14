@@ -24,12 +24,16 @@ export const urls = createTable(
   "urls",
   {
     id: uuid("id").defaultRandom().primaryKey(),
+    title : varchar("title", { length: 255 }),
     url: text("url").notNull(),
     slug: varchar("slug", { length: 255 }).notNull().unique(),
     userId: varchar("userId", { length: 255 }).notNull(),
     createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-  }
+  },
+  (table) => ({
+    slugIndex: index('slug_index').on(table.slug),
+  })
 )
 
 export const users = createTable("user", {
