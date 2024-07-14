@@ -20,21 +20,6 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `url-shortener_${name}`);
 
-export const urls = createTable(
-  "urls",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
-    title : varchar("title", { length: 255 }),
-    url: text("url").notNull(),
-    slug: varchar("slug", { length: 255 }).notNull().unique(),
-    userId: varchar("userId", { length: 255 }).notNull(),
-    createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-  },
-  (table) => ({
-    slugIndex: index('slug_index').on(table.slug),
-  })
-)
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
@@ -45,6 +30,39 @@ export const users = createTable("user", {
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
 });
+
+export const campaigns = createTable(
+  "campaigns",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    campaignUrl : varchar("campaignUrl", { length: 255 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    userId: varchar("userId", { length: 255 }).notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+  })
+
+export const urls = createTable(
+  "urls",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    title : varchar("title", { length: 255 }),
+    url: text("url").notNull(),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    userId: varchar("userId", { length: 255 }).notNull().references(() => users.id),
+    campaignId : uuid("campaignId").references(() => campaigns.id),
+    clicks : integer("clicks").default(0),
+    createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+  },
+  (table) => ({
+    slugIndex: index('slug_index').on(table.slug),
+  })
+)
+
+
+
+
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
