@@ -4,6 +4,17 @@ import { Url } from './Shortener'
 import copy from 'clipboard-copy'
 import toast from 'react-hot-toast';
 import {QRCode} from 'react-qrcode-logo'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter
+} from "../components/ui/dialog"
+import html2canvas from 'html2canvas'
+
 
 
 import React from "react";
@@ -12,6 +23,7 @@ import { Copy, CornerRightDown, Loader, Loader2, Pencil, PencilIcon, QrCode, Tra
 import { set } from 'zod';
 import { redirect, useRouter } from 'next/navigation';
 import { redirectToMyUrls } from '~/app/lib/queries';
+import { useRef } from 'react';
 
 function isValidUrl(urlString: string) {
   try {
@@ -31,6 +43,7 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
   const [newUrl, setNewUrl] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>(); // ['Invalid URL'
+  const qrRef=useRef(null)
   const changeUrlSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // e.stopPropagation();
@@ -70,6 +83,8 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
 
 
   }
+  const [qrConfig,SetQRconfig]=useState({});
+
   const copyClipboard=async ()=> {
     try {
       await copy(`${process.env.NEXT_PUBLIC_URL}/${slug}`)
@@ -81,7 +96,37 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
     }
 
   }
-  const [showQr,setShowQr]=useState(false)
+const copyQRCode =async ()=>{
+  if(qrRef.current){
+    try {
+      const canvas=await html2canvas(qrRef.current)
+      canvas.toBlob(blob=>{
+        const item =new ClipboardItem({'image/png':blob})
+        navigator.clipboard.write([item]);
+        toast.success('Qr code copied to clipboard')
+      })
+    }
+    catch(error){
+      toast.error("Faild to copy QR code")
+      console.error("failed to copy QR code to clipboard",error)
+    }
+
+  }
+}
+const downloadQRCode =async ()=>{
+  if (qrRef.current) {
+    try {
+      const canvas = await html2canvas(qrRef.current);
+      const link = document.createElement('a');
+      link.download = `${slug}-qrcode.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    } catch (error) {
+      toast.error('Failed to download QR code');
+      console.error('Failed to download QR code', error);
+    }
+  }
+}
 
   const deleteUrl = async () => {
     try {
@@ -138,10 +183,36 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
               <div className='flex gap-3 items-end '>
                 
                   
-              <div onClick={()=>{setShowQr(!showQr)}} className=' relative cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>
+            <Dialog>
+      <DialogTrigger asChild>
+      <div  className=' relative cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>
                   <QrCode />
+               
+
                 </div>
-                <div onClick={copyClipboard} className='cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Qr code</DialogTitle>
+          <DialogDescription>
+            Share Your QR Code
+          </DialogDescription>
+        </DialogHeader>
+        
+          <div className="flex flex-row">
+        <div className='p-2'  ref={qrRef}> <QRCode value={`${process.env.NEXT_PUBLIC_URL}/${slug}`}  /></div>
+        
+          <div className='flex flex-col justify-evenly justify-center'>
+            <button  onClick={copyQRCode}>Copy</button>
+            <button onClick={downloadQRCode}>Download</button>
+          </div>
+        </div>
+        
+      </DialogContent>
+    </Dialog>
+
+
+                <div onClick={copyClipboard} className='cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-cenhttps://www.youtube.com/watch?v=R3phIupkMBMter'>
                   <Copy />
                 </div>
                 <div onClick={onOpen} className='cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>
