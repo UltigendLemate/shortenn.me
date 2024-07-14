@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache"
 
 export const getMyUrls = async (page: number, limit: number): Promise<Url[] | null> => {
   const session = await getServerSession(authOptions);
-  console.log("session \n\n\n\n", session)
+  // console.log("session \n\n\n\n", session)
   if (!session) return null;
     const res = await db.query.urls.findMany({
       where(fields, operators) {
