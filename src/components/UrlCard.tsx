@@ -1,5 +1,5 @@
 'use client'
-import { FC, use, useState } from 'react'
+import { FC, MutableRefObject, use, useState } from 'react'
 import { Url } from './Shortener'
 import copy from 'clipboard-copy'
 import toast from 'react-hot-toast';
@@ -18,12 +18,15 @@ import html2canvas from 'html2canvas'
 
 
 import React from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link, divider } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link, divider, Input } from "@nextui-org/react";
 import { Copy, CornerRightDown, Loader, Loader2, Pencil, PencilIcon, QrCode, Trash2 } from 'lucide-react';
-import { set } from 'zod';
+import { set, string } from 'zod';
 import { redirect, useRouter } from 'next/navigation';
 import { redirectToMyUrls } from '~/app/lib/queries';
 import { useRef } from 'react';
+import { InputField } from './InputField';
+import { SelectField } from './SelectInput';
+import { ImageUploadField } from './ImageUpload';
 
 function isValidUrl(urlString: string) {
   try {
@@ -83,7 +86,25 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
 
 
   }
-  const [qrConfig,SetQRconfig]=useState({});
+  const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
+  const handleChange=({target}:any)=>{
+    // if(target.name==="eyeradius_inner"||"eyeradius_outer")
+    SetQRconfig((preState)=>({
+      ...preState,
+      [target.name]:target.value
+    }))
+
+  }
+  const eyeRadiusInput=(id:string)=>{
+    return <InputField
+    name={id}
+    type='range'
+    handleChange={handleChange}
+    min={0}
+    max={50}
+    defaultValue={(qrConfig as any)[id]}/>
+
+  }
 
   const copyClipboard=async ()=> {
     try {
@@ -183,7 +204,7 @@ const downloadQRCode =async ()=>{
               <div className='flex gap-3 items-end '>
                 
                   
-            <Dialog>
+            <Dialog >
       <DialogTrigger asChild>
       <div  className=' relative cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>
                   <QrCode />
@@ -191,21 +212,183 @@ const downloadQRCode =async ()=>{
 
                 </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-full max-w-[800px] bg-pink-100">
         <DialogHeader>
-          <DialogTitle>Qr code</DialogTitle>
+          <DialogTitle className='font-semibold text-2xl'>QR Code</DialogTitle>
           <DialogDescription>
-            Share Your QR Code
+         <span className='text-violet-700 font-bold'>Design </span>Your QR Code
           </DialogDescription>
         </DialogHeader>
         
-          <div className="flex flex-row">
-        <div className='p-2'  ref={qrRef}> <QRCode value={`${process.env.NEXT_PUBLIC_URL}/${slug}`}  /></div>
+      
+
+  
         
-          <div className='flex flex-col justify-evenly justify-center'>
+          <div className="flex flex-row">
+          
+           <div className='flex flex-col justify-evenly'>
+            <div className='flex flex-row'>
+              <div>
+              <p className='text-violet-700 font-bold p-1'>General </p>
+                <SelectField
+                name='ecLevel'
+                tag="Ec Level"
+                options={['L','M','Q','H']}
+                handleChange={handleChange}
+                />
+                <InputField
+                name='size'
+                tag="Size"
+                type='range'
+                handleChange={handleChange}
+                min={100}
+                max={300}
+                />
+                <InputField
+                name='quietZone'
+                tag='Quiet Zone'
+                type='range'
+                handleChange={handleChange}
+                min={5}
+                max={30}
+                />
+                <InputField
+                name='bgColor'
+                type='color'
+                tag="Background Color"
+                defaultValue='#ffffff'
+                handleChange={handleChange}
+                />
+                <InputField
+                name='fgColor'
+                type='color'
+                tag="Foreground Color"
+                defaultValue='#000000'
+                handleChange={handleChange}
+                />
+                <SelectField
+                name='qrStyle'
+                tag='QR Style'
+                options={['squares','dots','fluid']}
+                handleChange={handleChange}
+                />
+            </div>
+              <div >
+                <p className='text-violet-700 font-bold p-1'> Eye Configration</p>
+                <div className='flex flex-row'>
+                  <div>
+                  <p className='text-fuchsia-500 font-semibold p-1' >Radius</p>
+                    <p className='text-fuchsia-500 font-semibold p-1'>Corner-1 </p>
+                  {eyeRadiusInput("eyeradius_corner_1")}
+                  <p className='text-fuchsia-500 font-semibold p-1'>Corner-2 </p>
+                  {eyeRadiusInput("eyeradius_corner_2")}
+                  <p className='text-fuchsia-500 font-semibold p-1'>Corner-3 </p>
+                  {eyeRadiusInput("eyeradius_corner_3")}
+                  <p className='text-fuchsia-500 font-semibold p-1'>Corner-4 </p>
+                  {eyeRadiusInput("eyeradius_corner_4")}
+                
+                  </div>
+                  <div>
+                 
+                <InputField
+
+                name='eyeColor'
+                type='color'
+                tag="Color"
+                defaultValue={qrConfig.fgColor??"#000000"}
+                handleChange={handleChange}
+              />
+                  </div>
+                </div>
+                
+
+              </div>
+
+                
+                </div>
+              
+              <div>
+                <p className='text-violet-700 font-bold p-1'>Brand </p>
+<ImageUploadField
+name='logoImage'
+tag="Logo"
+handleChange={handleChange}
+/>
+<InputField 
+name='logoWidth'
+type='range'
+tag='Width'
+handleChange={handleChange}
+min={20}
+max={500}
+/>
+<InputField
+name='logoHeight'
+tag="Height"
+type='range'
+handleChange={handleChange}
+min={20}
+max={500}
+/>
+<InputField
+name='logoOpacity'
+type='range'
+tag="Opacity"
+handleChange={handleChange}
+min={0}
+max={1}
+step={0.1}
+defaultValue={1}
+/>
+<InputField
+name='logoPadding'
+type='range'
+tag="Padding"
+handleChange={handleChange}
+min={0}
+max={20}
+step={1}
+defaultValue={2}
+/>
+<SelectField 
+name='logoPaddingStyle'
+tag="Padding Stlyle"
+handleChange={handleChange}
+options={['square','circle']}
+
+                />
+              </div>
+              
+           
+              
+              
+
             <button  onClick={copyQRCode}>Copy</button>
             <button onClick={downloadQRCode}>Download</button>
           </div>
+          <div ref={qrRef} className='p-1' > <QRCode  value={`${process.env.NEXT_PUBLIC_URL}/${slug}`}  
+          {
+            ...{
+              ...qrConfig,
+              eyeRadius:[
+                {
+                  outer:[qrConfig.eyeradius_corner_1,qrConfig.eyeradius_corner_2,qrConfig.eyeradius_corner_3,qrConfig.eyeradius_corner_4],
+                  inner:[qrConfig.eyeradius_corner_1,qrConfig.eyeradius_corner_2,qrConfig.eyeradius_corner_3,qrConfig.eyeradius_corner_4],
+                },
+                {
+                  outer:[qrConfig.eyeradius_corner_1,qrConfig.eyeradius_corner_2,qrConfig.eyeradius_corner_3,qrConfig.eyeradius_corner_4],
+                  inner:[qrConfig.eyeradius_corner_1,qrConfig.eyeradius_corner_2,qrConfig.eyeradius_corner_3,qrConfig.eyeradius_corner_4],
+                },
+                {
+                  outer:[qrConfig.eyeradius_corner_1,qrConfig.eyeradius_corner_2,qrConfig.eyeradius_corner_3,qrConfig.eyeradius_corner_4],
+                  inner:[qrConfig.eyeradius_corner_1,qrConfig.eyeradius_corner_2,qrConfig.eyeradius_corner_3,qrConfig.eyeradius_corner_4],
+                }
+                
+              ]
+
+            }
+          }
+          /></div>
         </div>
         
       </DialogContent>
