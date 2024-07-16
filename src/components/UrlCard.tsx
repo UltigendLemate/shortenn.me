@@ -221,15 +221,10 @@ const downloadQRCode =async ()=>{
         </DialogHeader>
         
       
-
-  
-        
-          <div className="flex flex-row">
-          
-           <div className='flex flex-col justify-evenly'>
-            <div className='flex flex-row'>
-              <div>
-              <p className='text-violet-700 font-bold p-1'>General </p>
+        <div className='flex flex-row justify-evenly'>
+            <div className='flex flex-col'>
+              <div className='flex flex-col'>
+              <p className='text-violet-700 font-bold p-.5'>General </p>
                 <SelectField
                 name='ecLevel'
                 tag="Ec Level"
@@ -242,15 +237,15 @@ const downloadQRCode =async ()=>{
                 type='range'
                 handleChange={handleChange}
                 min={100}
-                max={300}
+                max={250}
                 />
                 <InputField
                 name='quietZone'
                 tag='Quiet Zone'
                 type='range'
                 handleChange={handleChange}
-                min={5}
-                max={30}
+                min={0}
+                max={20}
                 />
                 <InputField
                 name='bgColor'
@@ -272,9 +267,10 @@ const downloadQRCode =async ()=>{
                 options={['squares','dots','fluid']}
                 handleChange={handleChange}
                 />
-            </div>
-              <div >
-                <p className='text-violet-700 font-bold p-1'> Eye Configration</p>
+
+              </div>
+              <div className='flex flex-col'>
+              <p className='text-violet-700 font-bold p-.5'> Eye Configration</p>
                 <div className='flex flex-row'>
                   <div>
                   <p className='text-fuchsia-500 font-semibold p-1' >Radius</p>
@@ -300,73 +296,76 @@ const downloadQRCode =async ()=>{
               />
                   </div>
                 </div>
-                
 
               </div>
 
-                
-                </div>
-              
-              <div>
-                <p className='text-violet-700 font-bold p-1'>Brand </p>
-<ImageUploadField
-name='logoImage'
-tag="Logo"
-handleChange={handleChange}
-/>
-<InputField 
-name='logoWidth'
-type='range'
-tag='Width'
-handleChange={handleChange}
-min={20}
-max={500}
-/>
-<InputField
-name='logoHeight'
-tag="Height"
-type='range'
-handleChange={handleChange}
-min={20}
-max={500}
-/>
-<InputField
-name='logoOpacity'
-type='range'
-tag="Opacity"
-handleChange={handleChange}
-min={0}
-max={1}
-step={0.1}
-defaultValue={1}
-/>
-<InputField
-name='logoPadding'
-type='range'
-tag="Padding"
-handleChange={handleChange}
-min={0}
-max={20}
-step={1}
-defaultValue={2}
-/>
-<SelectField 
-name='logoPaddingStyle'
-tag="Padding Stlyle"
-handleChange={handleChange}
-options={['square','circle']}
+            </div>
 
-                />
+            <div className='flex flex-col'>
+              <div className='flex flex-col'>
+              <p className='text-violet-700 font-bold p-.5'>Brand </p>
+              <ImageUploadField
+              name='logoImage'
+              tag="Logo"
+              handleChange={handleChange}
+              />
+              <InputField 
+              name='logoWidth'
+              type='range'
+              tag='Width'
+              handleChange={handleChange}
+              min={20}
+              max={100}
+              />
+              <InputField
+              name='logoHeight'
+              tag="Height"
+              type='range'
+              handleChange={handleChange}
+              min={20}
+              max={100}
+              />
+              <InputField
+              name='logoOpacity'
+              type='range'
+              tag="Opacity"
+              handleChange={handleChange}
+              min={0}
+              max={1}
+              step={0.1}
+              defaultValue={1}
+              />
+              <InputField
+              name='logoPadding'
+              type='range'
+              tag="Padding"
+              handleChange={handleChange}
+              min={0}
+              max={20}
+              step={1}
+              defaultValue={2}
+              />
+              <SelectField 
+              name='logoPaddingStyle'
+              tag="Padding Stlyle"
+              handleChange={handleChange}
+              options={['square','circle']}
+
+                              />
               </div>
-              
-           
-              
-              
+              <div className='flex flex-col'>
+              <p className='text-violet-700 font-bold p-1'>Good To Go </p>
+              <div className='flex flex-row'>
+              <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600'  onClick={copyQRCode}>Copy</button>
+              <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600' onClick={downloadQRCode}>Download</button>
+              </div>
+              <div className='p-1' >
+                <span ref={qrRef} 
+                className='inline-block'
+                >
 
-            <button  onClick={copyQRCode}>Copy</button>
-            <button onClick={downloadQRCode}>Download</button>
-          </div>
-          <div ref={qrRef} className='p-1' > <QRCode  value={`${process.env.NEXT_PUBLIC_URL}/${slug}`}  
+             
+                 <QRCode  value={`${process.env.NEXT_PUBLIC_URL}/${slug}`}  
           {
             ...{
               ...qrConfig,
@@ -388,9 +387,17 @@ options={['square','circle']}
 
             }
           }
-          /></div>
-        </div>
-        
+          />
+             </span>
+          </div>
+
+              </div>
+
+
+            </div>
+            
+          </div>
+
       </DialogContent>
     </Dialog>
 

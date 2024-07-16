@@ -27,13 +27,14 @@ export const ImageUploadField=({name,tag,handleChange}:IImageUploadFieldProps)=>
         }
     }
     return (
-        <div className="flex flex-col p-1">
+        <div className="flex flex-col p-0.5">
             <label className="text-fuchsia-500 font-semibold" >{tag}</label>
             <input 
             type="file"
             accept="image/*"
             name={name}
             onChange={e=>retrievePathFile(e.target.files)}
+            className="block max-w-50 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             />
         </div>
     )
