@@ -85,7 +85,7 @@ return (
 
             </div>
   </DialogTrigger>
-  <DialogContent className="w-full max-w-[1000px] bg-pink-100">
+  <DialogContent className="w-full max-w-[1000px] bg-pink-100 ">
     <DialogHeader>
       <DialogTitle className='font-semibold text-2xl'>QR Code</DialogTitle>
       <DialogDescription>
@@ -94,10 +94,10 @@ return (
     </DialogHeader>
     
   <div className='flex flex-row justify-evenly max-h-[65vh] overflow-y-auto'>
-    <div className='flex flex-wrap  '>
+    <div className='flex flex-wrap gap-5  '>
       
-        <div className='flex flex-col m-1 '>
-          <div className='flex flex-col'>
+        <div className='flex flex-col m-1'>
+          <div className='flex flex-col w-36'>
           <p className='text-violet-700 font-bold p-.5'>General </p>
             <SelectField
             name='ecLevel'
@@ -110,8 +110,8 @@ return (
             tag="Size"
             type='range'
             handleChange={handleChange}
-            min={100}
-            max={250}
+            min={150}
+            max={275}
             />
             <InputField
             name='quietZone'
@@ -147,7 +147,7 @@ return (
         </div>
 
         <div className='flex flex-col m-1'>
-          <div className='flex flex-col'>
+          <div className='flex flex-col w-36'>
           <p className='text-violet-700 font-bold p-.5'>Brand </p>
           <ImageUploadField
           name='logoImage'
@@ -202,7 +202,7 @@ return (
 
 
         </div>
-        <div className='flex flex-col m-1'>
+        <div className='flex flex-col m-1 w-36'>
           <p className='text-violet-700 font-bold p-.5'> Eye Configration</p>
             <div className='flex flex-col'>
               {/* <div> */}
@@ -245,15 +245,8 @@ return (
         
       </div>
       <div className='' >
-      <div className='flex flex-col'>
-          <p className='text-violet-700 font-bold p-1'>Good To Go </p>
-          <div className='flex flex-row justify-evenly'>
-          <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600'  onClick={copyQRCode}>Copy</button>
-          <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600' onClick={downloadQRCode}>Download</button>
-          </div>
-         
-
-          </div>
+      <p className='text-violet-700 font-bold p-1'>Good To Go </p>
+     
           <div>
           
             <span ref={qrRef} 
@@ -286,6 +279,15 @@ return (
       />
          </span>
       </div>
+      <div className='flex flex-col'>
+        
+          <div className='flex flex-row justify-evenly'>
+          <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600'  onClick={copyQRCode}>Copy</button>
+          <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600' onClick={downloadQRCode}>Download</button>
+          </div>
+         
+
+          </div>
       </div>
       </div>
 
