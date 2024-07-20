@@ -3,16 +3,7 @@ import { FC, MutableRefObject, use, useState } from 'react'
 import { Url } from './Shortener'
 import copy from 'clipboard-copy'
 import toast from 'react-hot-toast';
-import {QRCode} from 'react-qrcode-logo'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter
-} from "../components/ui/dialog"
+
 import html2canvas from 'html2canvas'
 
 
@@ -47,7 +38,7 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
   const [newUrl, setNewUrl] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>(); // ['Invalid URL'
-  const qrRef=useRef(null)
+
   const changeUrlSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // e.stopPropagation();
@@ -87,25 +78,6 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
 
 
   }
-  const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
-  const handleChange=({target}:any)=>{
-    // if(target.name==="eyeradius_inner"||"eyeradius_outer")
-    SetQRconfig((preState)=>({
-      ...preState,
-      [target.name]:target.value
-    }))
-
-  }
-  const eyeRadiusInput=(id:string)=>{
-    return <InputField
-    name={id}
-    type='range'
-    handleChange={handleChange}
-    min={0}
-    max={50}
-    defaultValue={(qrConfig as any)[id]}/>
-
-  }
 
   const copyClipboard=async ()=> {
     try {
@@ -118,38 +90,6 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
     }
 
   }
-const copyQRCode =async ()=>{
-  if(qrRef.current){
-    try {
-      const canvas=await html2canvas(qrRef.current)
-      canvas.toBlob(blob=>{
-        const item =new ClipboardItem({'image/png':blob})
-        navigator.clipboard.write([item]);
-        toast.success('Qr code copied to clipboard')
-      })
-    }
-    catch(error){
-      toast.error("Faild to copy QR code")
-      console.error("failed to copy QR code to clipboard",error)
-    }
-
-  }
-}
-const downloadQRCode =async ()=>{
-  if (qrRef.current) {
-    try {
-      const canvas = await html2canvas(qrRef.current);
-      const link = document.createElement('a');
-      link.download = `${slug}-qrcode.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-    } catch (error) {
-      toast.error('Failed to download QR code');
-      console.error('Failed to download QR code', error);
-    }
-  }
-}
-
   const deleteUrl = async () => {
     try {
       const res = await fetch('/api/deleteUrl', {
