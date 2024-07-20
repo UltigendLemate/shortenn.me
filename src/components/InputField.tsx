@@ -5,7 +5,7 @@ interface IInputFieldProps{
     min?:number;
     max?: number;
     step?:number;
-    defaultValue?:string|number;
+    defaultValue?:any;
     handleChange:(target:any)=> void;
     hideLabel?:boolean;
     value?:string|number;

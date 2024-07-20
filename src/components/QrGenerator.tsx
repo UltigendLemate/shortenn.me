@@ -39,7 +39,7 @@ const QrGenerator=({slug}:{slug:string})=>{
     handleChange={handleChange}
     min={0}
     max={50}
-    defaultValue={(qrConfig as any)[id]}/>
+    defaultValue={(qrConfig as any)[id]|0}/>
 
   }
 
@@ -103,6 +103,7 @@ return (
             name='ecLevel'
             tag="Ec Level"
             options={['L','M','Q','H']}
+
             handleChange={handleChange}
             />
             <InputField
@@ -110,8 +111,10 @@ return (
             tag="Size"
             type='range'
             handleChange={handleChange}
-            min={100}
-            max={250}
+            min={150}
+            max={275}
+            defaultValue={qrConfig['size']|200}
+
             />
             <InputField
             name='quietZone'
@@ -120,12 +123,13 @@ return (
             handleChange={handleChange}
             min={0}
             max={20}
+            defaultValue={qrConfig['quietZone']|2}
             />
             <InputField
             name='bgColor'
             type='color'
             tag="Background Color"
-            defaultValue='#ffffff'
+            defaultValue="#ffffff"
             handleChange={handleChange}
             />
             <InputField
@@ -161,6 +165,7 @@ return (
           handleChange={handleChange}
           min={20}
           max={100}
+          defaultValue={qrConfig['logoWidth']|20}
           />
           <InputField
           name='logoHeight'
@@ -169,6 +174,7 @@ return (
           handleChange={handleChange}
           min={20}
           max={100}
+          defaultValue={qrConfig['logoHeight']|20}
           />
           <InputField
           name='logoOpacity'
@@ -178,7 +184,7 @@ return (
           min={0}
           max={1}
           step={0.1}
-          defaultValue={1}
+          defaultValue={qrConfig['logoOpacity']|1}
           />
           <InputField
           name='logoPadding'
@@ -188,7 +194,7 @@ return (
           min={0}
           max={20}
           step={1}
-          defaultValue={2}
+          defaultValue={qrConfig['logoPadding']|2}
           />
           <SelectField 
           name='logoPaddingStyle'
