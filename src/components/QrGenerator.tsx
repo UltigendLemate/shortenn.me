@@ -23,7 +23,26 @@ import { QrCode } from 'lucide-react';
 import { string } from 'zod';
 const QrGenerator=({slug}:{slug:string})=>{
   const qrRef=useRef(null)
-  const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
+  // const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
+  const [qrConfig,SetQRconfig]=useState({
+    ecLevel:"L",
+    size:150,
+    quietZone:2,
+    bgColor:"#ffffff",
+    eyeColor:"#000000",
+    qrStyle:"squares",
+    fgColor:"#000000",
+    logoPaddingStyle:"square",
+    logoPadding:2,
+    logoOpacity:1,
+    logoHeight:20,
+    logoWidth:20,
+    logoImage:"",
+    eyeradius_corner_1:0,
+    eyeradius_corner_2:0,
+    eyeradius_corner_3:0,
+    eyeradius_corner_4:0
+  })
   const handleChange=({target}:any)=>{
     // if(target.name==="eyeradius_inner"||"eyeradius_outer")
     SetQRconfig((preState)=>({
@@ -39,7 +58,8 @@ const QrGenerator=({slug}:{slug:string})=>{
     handleChange={handleChange}
     min={0}
     max={50}
-    defaultValue={(qrConfig as any)[id]|0}/>
+    conf={qrConfig}
+    />
 
   }
 
@@ -103,6 +123,7 @@ return (
             name='ecLevel'
             tag="Ec Level"
             options={['L','M','Q','H']}
+            conf={qrConfig}
 
             handleChange={handleChange}
             />
@@ -113,7 +134,7 @@ return (
             handleChange={handleChange}
             min={150}
             max={275}
-            defaultValue={qrConfig['size']|200}
+           conf={qrConfig}
 
             />
             <InputField
@@ -123,7 +144,7 @@ return (
             handleChange={handleChange}
             min={0}
             max={20}
-            defaultValue={qrConfig['quietZone']|2}
+            conf={qrConfig}
             />
             <InputField
             name='bgColor'
@@ -131,19 +152,23 @@ return (
             tag="Background Color"
             defaultValue="#ffffff"
             handleChange={handleChange}
+            conf={qrConfig}
             />
             <InputField
             name='fgColor'
             type='color'
             tag="Foreground Color"
-            defaultValue='#000000'
+          
             handleChange={handleChange}
+            conf={qrConfig}
             />
             <SelectField
             name='qrStyle'
             tag='QR Style'
             options={['squares','dots','fluid']}
+            conf={qrConfig}
             handleChange={handleChange}
+
             />
 
           </div>
@@ -156,6 +181,7 @@ return (
           <ImageUploadField
           name='logoImage'
           tag="Logo"
+          conf={qrConfig}
           handleChange={handleChange}
           />
           <InputField 
@@ -164,8 +190,8 @@ return (
           tag='Width'
           handleChange={handleChange}
           min={20}
-          max={100}
-          defaultValue={qrConfig['logoWidth']|20}
+          max={60}
+          conf={qrConfig}
           />
           <InputField
           name='logoHeight'
@@ -173,8 +199,8 @@ return (
           type='range'
           handleChange={handleChange}
           min={20}
-          max={100}
-          defaultValue={qrConfig['logoHeight']|20}
+          max={60}
+          conf={qrConfig}
           />
           <InputField
           name='logoOpacity'
@@ -184,7 +210,7 @@ return (
           min={0}
           max={1}
           step={0.1}
-          defaultValue={qrConfig['logoOpacity']|1}
+          conf={qrConfig}
           />
           <InputField
           name='logoPadding'
@@ -192,14 +218,15 @@ return (
           tag="Padding"
           handleChange={handleChange}
           min={0}
-          max={20}
+          max={10}
           step={1}
-          defaultValue={qrConfig['logoPadding']|2}
+          conf={qrConfig}
           />
           <SelectField 
           name='logoPaddingStyle'
           tag="Padding Stlyle"
           handleChange={handleChange}
+          conf={qrConfig}
           options={['square','circle']}
 
                           />
@@ -240,7 +267,7 @@ return (
             name='eyeColor'
             type='color'
             tag="Color"
-            defaultValue={qrConfig.fgColor??"#000000"}
+            conf={qrConfig}
             handleChange={handleChange}
           />
               </div>

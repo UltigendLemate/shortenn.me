@@ -9,16 +9,17 @@ interface IInputFieldProps{
     handleChange:(target:any)=> void;
     hideLabel?:boolean;
     value?:string|number;
-    tag?:string
-
+    tag?:string;
+    conf?:any;
 }
-export const InputField= ({name,type,tag, handleChange,min,max,step,defaultValue,hideLabel,value}:IInputFieldProps)=>{
+export const InputField= ({name,type,tag, handleChange,min,max,step,defaultValue,hideLabel,conf}:IInputFieldProps)=>{
     const colorStyle="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700"
     const rangeStyle=" accent-violet-500 active:accent-violet-600 "
     let style=""
     if(type=='color')style=colorStyle
     else if(type=='range')style=rangeStyle
-
+    console.log(name)
+console.log(conf)
     return (
     <div className='flex flex-col p-0.5 w-32'>
         {!hideLabel&&<label  className='text-pink-100  font-semibold'>{tag}</label>}
@@ -31,7 +32,7 @@ export const InputField= ({name,type,tag, handleChange,min,max,step,defaultValue
          max={max}
          step={step}
          defaultValue={defaultValue}
-         value={value}
+         value={conf[name]}
          className={`max-w-44 min-w-20 ${style}`}
           />
     </div>
