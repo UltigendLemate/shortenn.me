@@ -1,7 +1,7 @@
 'use client'
-import { FC, MutableRefObject, use, useState } from 'react'
-import { Url } from './Shortener'
-import copy from 'clipboard-copy'
+import { useState } from 'react'
+
+
 import toast from 'react-hot-toast';
 import {QRCode} from 'react-qrcode-logo'
 import {
@@ -20,7 +20,7 @@ import { InputField } from './InputField';
 import { SelectField } from './SelectInput';
 import { ImageUploadField } from './ImageUpload';
 import { QrCode } from 'lucide-react';
-import { string } from 'zod';
+
 const QrGenerator=({slug}:{slug:string})=>{
   const qrRef=useRef(null)
   // const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
