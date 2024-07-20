@@ -3,8 +3,9 @@ import { FC, MutableRefObject, use, useState } from 'react'
 import { Url } from './Shortener'
 import copy from 'clipboard-copy'
 import toast from 'react-hot-toast';
+import QrGenerator from './QrGenerator';
 
-import html2canvas from 'html2canvas'
+
 
 
 
@@ -14,11 +15,7 @@ import { Copy, CornerRightDown, Loader, Loader2, Pencil, PencilIcon, QrCode, Tra
 import { set, string } from 'zod';
 import { redirect, useRouter } from 'next/navigation';
 import { redirectToMyUrls } from '~/app/lib/queries';
-import { useRef } from 'react';
-import { InputField } from './InputField';
-import { SelectField } from './SelectInput';
-import { ImageUploadField } from './ImageUpload';
-import QrGenerator from './QrGenerator';
+;
 
 function isValidUrl(urlString: string) {
   try {
