@@ -20,8 +20,8 @@ export const InputField= ({name,type,tag, handleChange,min,max,step,defaultValue
     else if(type=='range')style=rangeStyle
 
     return (
-    <div className='flex flex-col p-0.5'>
-        {!hideLabel&&<label  className='text-fuchsia-500 font-semibold'>{tag}</label>}
+    <div className='flex flex-col p-0.5 w-32'>
+        {!hideLabel&&<label  className='text-pink-100  font-semibold'>{tag}</label>}
         <input
          type={type}
          name={name}

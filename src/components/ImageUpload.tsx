@@ -27,8 +27,8 @@ export const ImageUploadField=({name,tag,handleChange}:IImageUploadFieldProps)=>
         }
     }
     return (
-        <div className="flex flex-col p-0.5 max-w-36">
-            <label className="text-fuchsia-500 font-semibold" >{tag}</label>
+        <div className="flex flex-col p-0.5 w-32">
+            <label className="text-pink-100 font-semibold" >{tag}</label>
             <input 
             type="file"
             accept="image/*"

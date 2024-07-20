@@ -85,20 +85,20 @@ return (
 
             </div>
   </DialogTrigger>
-  <DialogContent className="w-full max-w-[1000px] bg-pink-100 ">
+  <DialogContent className="w-full max-w-[1000px] bg-purple-900">
     <DialogHeader>
-      <DialogTitle className='font-semibold text-2xl'>QR Code</DialogTitle>
-      <DialogDescription>
-     <span className='text-violet-700 font-bold'>Design </span>Your QR Code
+      <DialogTitle className='font-bold text-2xl text-white'>QR Code</DialogTitle>
+      <DialogDescription className='text-gray-200'>
+     <span className='text-pink-300 font-bold'>Design </span>Your QR Code
       </DialogDescription>
     </DialogHeader>
     
   <div className='flex flex-row justify-evenly max-h-[65vh] overflow-y-auto'>
     <div className='flex flex-wrap gap-5  '>
       
-        <div className='flex flex-col m-1'>
-          <div className='flex flex-col w-36'>
-          <p className='text-violet-700 font-bold p-.5'>General </p>
+        <div className='flex flex-col m-1 '>
+          <div className='flex flex-col'>
+          <p className='text-pink-300 font-bold p-.5'>General </p>
             <SelectField
             name='ecLevel'
             tag="Ec Level"
@@ -110,8 +110,8 @@ return (
             tag="Size"
             type='range'
             handleChange={handleChange}
-            min={150}
-            max={275}
+            min={100}
+            max={250}
             />
             <InputField
             name='quietZone'
@@ -147,8 +147,8 @@ return (
         </div>
 
         <div className='flex flex-col m-1'>
-          <div className='flex flex-col w-36'>
-          <p className='text-violet-700 font-bold p-.5'>Brand </p>
+          <div className='flex flex-col'>
+          <p className='text-pink-300  font-bold p-.5'>Brand </p>
           <ImageUploadField
           name='logoImage'
           tag="Logo"
@@ -202,23 +202,23 @@ return (
 
 
         </div>
-        <div className='flex flex-col m-1 w-36'>
-          <p className='text-violet-700 font-bold p-.5'> Eye Configration</p>
+        <div className='flex flex-col m-1'>
+          <p className='text-pink-300  font-bold p-.5'> Eye Configration</p>
             <div className='flex flex-col'>
               {/* <div> */}
-              <p className='text-fuchsia-500 font-semibold p-1' >Radius</p>
+              <p className='text-pink-100  font-semibold p-1' >Radius</p>
               <div className='flex flex-col'>
 
-               <div> <p className='text-fuchsia-500 font-semibold p-1'>Corner-1 </p>
+               <div> <p className='text-pink-100  font-semibold p-1'>Corner-1 </p>
               {eyeRadiusInput("eyeradius_corner_1")}
               </div>
-              <div> <p className='text-fuchsia-500 font-semibold p-1'>Corner-2 </p>
+              <div> <p className='text-pink-100  font-semibold p-1'>Corner-2 </p>
               {eyeRadiusInput("eyeradius_corner_2")}
               </div>
-              <div> <p className='text-fuchsia-500 font-semibold p-1'>Corner-3 </p>
+              <div> <p className='text-pink-100  font-semibold p-1'>Corner-3 </p>
               {eyeRadiusInput("eyeradius_corner_3")}
               </div>
-              <div> <p className='text-fuchsia-500 font-semibold p-1'>Corner-4 </p>
+              <div> <p className='text-pink-100  font-semibold p-1'>Corner-4 </p>
               {eyeRadiusInput("eyeradius_corner_4")}
               </div>
 
@@ -245,8 +245,8 @@ return (
         
       </div>
       <div className='' >
-      <p className='text-violet-700 font-bold p-1'>Good To Go </p>
-     
+      <p className='text-pink-300  font-bold p-1'>Good To Go </p>
+    
           <div>
           
             <span ref={qrRef} 
@@ -280,7 +280,6 @@ return (
          </span>
       </div>
       <div className='flex flex-col'>
-        
           <div className='flex flex-row justify-evenly'>
           <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600'  onClick={copyQRCode}>Copy</button>
           <button className='p-2 m-1 rounded-md text-white font-semibold min-w-20 bg-gradient-to-tr from-purple-700 to-pink-600' onClick={downloadQRCode}>Download</button>

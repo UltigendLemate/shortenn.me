@@ -9,8 +9,8 @@ interface ISelectFieldProps{
 }
 export const SelectField=({name,tag,options,hideLabel,handleChange}:ISelectFieldProps)=>{
     return (
-        <div className="flex flex-col p-1">
-           {!hideLabel&& <label className="text-fuchsia-500 font-semibold" >{tag}</label>}
+        <div className="flex flex-col p-0.5 w-32">
+           {!hideLabel&& <label className="text-pink-100  font-semibold" >{tag}</label>}
             <select 
             name={name}
             onChange={handleChange}
