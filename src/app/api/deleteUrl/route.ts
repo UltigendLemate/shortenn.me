@@ -19,7 +19,7 @@ export async function POST(req : Request){
         )
         ).returning({id : urls.id});
 
-        console.log(res, "res \n\n\n\n\n")
+        // console.log(res, "res \n\n\n\n\n")
     if(res.length > 0){
         return new Response(JSON.stringify(res),{status:200});
     }

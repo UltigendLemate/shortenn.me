@@ -33,7 +33,7 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
     // e.stopPropagation();
     setIsLoading(true);
     try {
-      console.log(newUrl);
+      // console.log(newUrl);
       if (!isValidUrl(newUrl)) {
         setError('Please enter a valid URL!');
         return;
