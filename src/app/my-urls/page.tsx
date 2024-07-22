@@ -3,18 +3,16 @@
 import { notFound } from "next/navigation";
 import { type Url } from "../../components/Shortener";
 import UrlCard from "../../components/UrlCard";
-import { authOptions } from "~/server/auth";
-import { getServerSession } from "next-auth";
+// import { authOptions } from "~/server/auth";
+// import { getServerSession } from "next-auth";
 import { getMyUrls, totalUrls } from "../lib/queries";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
-import PaginationComponent from "~/components/PaginationComponent";
+// import { ChevronLeft } from "lucide-react";
+// import Link from "next/link";
+// import PaginationComponent from "~/components/PaginationComponent";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { get } from "http";
 import { CiSearch } from "react-icons/ci";
 import InfiniteScroll from "react-infinite-scroll-component";
-import page from "../404/page";
 
 const dummyUrl = [
   { slug: "dummy", url: "https://www.google.com", id: "1" },
@@ -29,13 +27,13 @@ const dummyUrl = [
 ]
 
 
-const Page = ({ searchParams }: { searchParams: { page?: string } }) => {
+const Page = () => {
   const session = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState<number>(parseInt(searchParams.page ?? '1', 10)); 
+  const [currentPage, setCurrentPage] = useState<number>(1); 
   const [result, setResult] = useState<Partial<Url>[]>(dummyUrl);
-  const [totalLinks, setTotalLinks] = useState<number>(1);
-  const linksPerPage = 9; // Set links per page
+  const [totalLinks, setTotalLinks] = useState<number>(0);
+  const linksPerPage = 15; // Set links per page
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState<Partial<Url>[]>([]);
@@ -48,7 +46,7 @@ const Page = ({ searchParams }: { searchParams: { page?: string } }) => {
     if (res !== null) {
       setResult((post) => [...post, ...res]);
       setCurrentPage(nextPage);
-      if (res.length < linksPerPage) {
+      if (totalLinks <= nextPage * linksPerPage) {
         setHasMore(false);
       }
     }
@@ -58,9 +56,9 @@ const Page = ({ searchParams }: { searchParams: { page?: string } }) => {
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
     return result.filter((fUrl: Partial<Url>) => {
       // Handle undefined cases for url, slug, userId, createdAt, and updatedAt
-      return regex.test(fUrl.url || '') ||
-        regex.test(fUrl.slug || '') ||
-        regex.test(fUrl.userId || '');
+      return regex.test(fUrl.url ?? '') ||
+        regex.test(fUrl.slug ?? '') ||
+        regex.test(fUrl.userId ?? '');
     });
   }
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,23 +70,27 @@ const Page = ({ searchParams }: { searchParams: { page?: string } }) => {
 
 
   useEffect(() => {
-    console.log("page changed i know", searchParams.page);
-    console.log(result)
-  }, [currentPage]);
-  useEffect(() => {
+    
+    console.log("first use effect rendered");
     setIsLoading(true);
     async function fetchData() {
       const response = await getMyUrls(currentPage, linksPerPage);
       if (response) {
-        setResult([]);
         setResult(response);
         setIsLoading(false);
+        if (totalLinks>0 && totalLinks <= linksPerPage) {
+          console.log(totalLinks, linksPerPage)
+          console.log("setting false")
+          setHasMore(false);
+        }
       }
     }
+    if(totalLinks>0)
     fetchData();
-  }, [currentPage]);
+  }, [totalLinks]);
 
   useEffect(() => {
+    console.log("running total Link");
     if (session) {
       const fetchData = async () => {
         const totlinks = await totalUrls(session.data?.user.id ?? "");
@@ -96,7 +98,7 @@ const Page = ({ searchParams }: { searchParams: { page?: string } }) => {
       }
       fetchData();
     }
-  }, [session, totalLinks])
+  }, [session])
 
   if (!isLoading && result.length === 0) return notFound();
 
@@ -141,12 +143,7 @@ const Page = ({ searchParams }: { searchParams: { page?: string } }) => {
       </InfiniteScroll>
       
     ) : (
-      // <div className="grid md:grid-cols-3 gap-10  container mt-3">
-      //   {result.map((link, index) => {
-      //     return <UrlCard key={link.id} {...link} loading={isLoading} />
-      //   })
-      //   }
-      // </div>
+
       <InfiniteScroll
         dataLength={result.length}
         next={getMorePost}

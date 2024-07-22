@@ -30,7 +30,6 @@ export const totalUrls = async (userId: string) => {
         return eq(fields.userId, userId);
       },
     });
-  
     return res.length;
   };
 
