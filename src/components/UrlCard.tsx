@@ -28,6 +28,7 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
   const [newUrl, setNewUrl] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>(); // ['Invalid URL'
+
   const changeUrlSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // e.stopPropagation();
@@ -96,9 +97,12 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
     }
   }
 
+ 
   return (
     <>
+    
       <div className='p-5 max-w-full overflow-hidden rounded-md bg-gradient-to-tr from-purple-700 to-pink-600 '>
+      
         {loading ?
           <>
             <div className=' flex justify-between'>
@@ -118,7 +122,7 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
                 <a href={`${process.env.NEXT_PUBLIC_URL}/${slug}`}>
                   /{slug}
                 </a>
-                <CornerRightDown />
+                {/* <CornerRightDown /> */}
               </div>
               <div className='flex gap-3 items-end '>
                 <div onClick={onOpen} className='cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>

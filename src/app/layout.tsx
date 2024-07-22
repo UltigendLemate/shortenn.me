@@ -30,12 +30,13 @@ export default async function RootLayout({
 
       <body className={`font-sans ${inter.variable}  min-h-screen box-content`}>
         <Provider session={session}>
-    <Toaster/>
-          <Navbar/>
-        {children}
-       
+
+          <Toaster />
+          <Navbar />
+          {children}
+
         </Provider>
-        </body>
+      </body>
     </html>
   );
 }

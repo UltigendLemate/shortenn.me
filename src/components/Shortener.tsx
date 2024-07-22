@@ -106,8 +106,8 @@ const Shortener = () => {
     return <div className='gap-3 grid mx-3 w-full max-w-2xl'>
         <h2 className=' text-2xl md:text-3xl font-semibold'>Shorten a long URL</h2>
         <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-
-            <input type="text" placeholder='Paste the long URL' className={`outline-none  px-4 py-2 bg-opacity-30 bg-pink-300 font-medium rounded-lg text-white w-full
+            <input type="text" placeholder='Paste the long URL' 
+            className={`outline-none  px-4 py-2 bg-opacity-30 bg-pink-300 font-medium rounded-lg text-white w-full
     placeholder:text-pink-100 placeholder:font-normal ${errors.url ? "border-red-500 border-2" : ""}`} {...register('url', {
                 required: true, onChange(event) {
                     clearErrors('url');
@@ -123,9 +123,10 @@ const Shortener = () => {
                     <label htmlFor="slug" className='block py-2 font-medium'>Domain</label>
                     <input id='slug' disabled type="text" className='text-white w-full px-2.5 py-1 rounded-md outline-none' value="shortenn.me"
                     />
-
                 </div>
+
                 <span className='text-2xl'>/</span>
+
                 <div className='w-full'>
                     <label htmlFor="slug" className='block py-2 font-medium'>Enter backlink</label>
                     <div className={`flex relative bg-opacity-30 bg-pink-300 font-medium rounded-lg ${errors.slug ? "border-red-500 border-2" : ""}`}>
@@ -142,7 +143,6 @@ const Shortener = () => {
                                         available === 'available' ? <Check className='text-green-500 h-6 w-6' /> :
                                             available === 'unavailable' ? <X className='text-red-600  h-6 w-6' /> :
                                                 <XCircle />
-
                             }
                         </div>
                     </div>
@@ -162,17 +162,6 @@ const Shortener = () => {
                 :
                 <button disabled={available == 'unavailable' || available == "checking" || isSubmitting || successUrl != '' || errors.url != undefined || errors.slug != undefined} type='submit' className='text-pink-500 disabled:opacity-50 bg-pink-100 font-bold w-fit mt-4 py-2 px-4 mb-4 rounded-md'>Shorten My Link</button>
             }
-
-
-
-
-
-
-
-
-
-
-
         </form>
     </div>
 }
