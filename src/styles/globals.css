@@ -67,3 +67,9 @@
       @apply bg-background text-foreground;
     }
   }
+
+  canvas{
+    width: 80% !important;
+    margin: auto !important;
+    height: auto !important;
+  }
