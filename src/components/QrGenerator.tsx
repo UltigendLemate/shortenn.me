@@ -18,11 +18,42 @@ import { InputField } from "./InputField";
 import { SelectField } from "./SelectInput";
 import { ImageUploadField } from "./ImageUpload";
 import { QrCode } from "lucide-react";
+interface QrGeneratorFieldProps{
+  slug:string|undefined
 
-const QrGenerator = ({ slug }: { slug: string }) => {
+}
+
+const QrGenerator = ({ slug }:QrGeneratorFieldProps) => {
   const qrRef = useRef(null);
+  type EcLevel = "L" | "M" | "Q" | "H";
+const ecLevels: EcLevel[] = ["L", "M", "Q", "H"];
+type QrStyle="squares"|"dots"|"fluid";
+type LogoPaddingStyle="square"|"circle";
+
+
+interface QrConfig {
+  ecLevel: EcLevel;
+  size: number;
+  quietZone: number;
+  bgColor: string;
+  eyeColor: string;
+  qrStyle: QrStyle;
+  fgColor: string;
+  logoPaddingStyle: LogoPaddingStyle;
+  logoPadding: number;
+  logoOpacity: number;
+  logoHeight: number;
+  logoWidth: number;
+  logoImage: string;
+  eyeradius_corner_1: number;
+  eyeradius_corner_2: number;
+  eyeradius_corner_3: number;
+  eyeradius_corner_4: number;
+}
+
   // const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
-  const [qrConfig, SetQRconfig] = useState({
+
+  const [qrConfig, SetQRconfig] = useState<QrConfig>({
     ecLevel: "L",
     size: 150,
     quietZone: 2,
@@ -66,10 +97,14 @@ const QrGenerator = ({ slug }: { slug: string }) => {
       try {
         const canvas = await html2canvas(qrRef.current);
         canvas.toBlob((blob) => {
-          const item = new ClipboardItem({ "image/png": blob });
+          if(blob){const item = new ClipboardItem({ "image/png": blob });
           navigator.clipboard.write([item]);
-          toast.success("Qr code copied to clipboard");
+          toast.success("Qr code copied to clipboard");}
+          else {
+            toast.error("Failed to copy QR Code : Blob is null ")
+          }
         });
+
       } catch (error) {
         toast.error("Faild to copy QR code");
         console.error("failed to copy QR code to clipboard", error);
@@ -115,7 +150,7 @@ const QrGenerator = ({ slug }: { slug: string }) => {
             <SelectField
               name="ecLevel"
               tag="Ec Level"
-              options={["L", "M", "Q", "H"]}
+              options={ecLevels}
               conf={qrConfig}
               handleChange={handleChange}
             />
