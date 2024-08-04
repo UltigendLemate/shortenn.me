@@ -1,9 +1,8 @@
 import type { Config } from "tailwindcss"
 
 const config = {
-  darkMode:"class",
+  darkMode: ["class"],
   content: [
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
@@ -75,7 +74,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"),require("@nextui-org/react")],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config
 
 export default config
