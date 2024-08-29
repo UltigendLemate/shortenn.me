@@ -1,14 +1,21 @@
 'use client'
-import { FC } from 'react'
+import { FC, MutableRefObject, use, useState } from 'react'
 import { Url } from './Shortener'
+import copy from 'clipboard-copy'
+import toast from 'react-hot-toast';
+import QrGenerator from './QrGenerator';
+
+
+
+
 
 import React from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link } from "@nextui-org/react";
-import { CornerRightDown, Loader, Loader2, Pencil, PencilIcon, Trash2 } from 'lucide-react';
-import { set } from 'zod';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link, divider, Input } from "@nextui-org/react";
+import { Copy, CornerRightDown, Loader, Loader2, Pencil, PencilIcon, QrCode, Trash2 } from 'lucide-react';
+import { set, string } from 'zod';
 import { redirect, useRouter } from 'next/navigation';
 import { redirectToMyUrls } from '~/app/lib/queries';
-import toast from 'react-hot-toast';
+;
 
 function isValidUrl(urlString: string) {
   try {
@@ -28,6 +35,7 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
   const [newUrl, setNewUrl] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>(); // ['Invalid URL'
+
   const changeUrlSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // e.stopPropagation();
@@ -68,6 +76,17 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
 
   }
 
+  const copyClipboard=async ()=> {
+    try {
+      await copy(`${process.env.NEXT_PUBLIC_URL}/${slug}`)
+      toast.success("Link copied to clipboard")
+    }
+    catch (error){
+      toast.error("Failed to copy text")
+      console.error("Failed to copy text to clipboard",error)
+    }
+
+  }
   const deleteUrl = async () => {
     try {
       const res = await fetch('/api/deleteUrl', {
@@ -121,6 +140,13 @@ const UrlCard: FC<Partial<Url> & { loading: boolean }> = ({ url, slug, loading }
                 <CornerRightDown />
               </div>
               <div className='flex gap-3 items-end '>
+                
+                  <QrGenerator slug={slug}/>
+       
+
+                <div onClick={copyClipboard} className='cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-cenhttps://www.youtube.com/watch?v=R3phIupkMBMter'>
+                  <Copy />
+                </div>
                 <div onClick={onOpen} className='cursor-pointer hover:bg-white hover:text-pink-700  rounded-full w-8 h-8 flex justify-center items-center'>
                   <Pencil />
                 </div>
