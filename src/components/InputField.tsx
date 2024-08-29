@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
+import { QrConfig } from "./QrGenerator";
 interface IInputFieldProps {
-  name: string;
+  name: keyof QrConfig;
   type: "color" | "range" | "text";
   min?: number;
   max?: number;
   step?: number;
-  defaultValue?: any;
+  defaultValue?: unknown;
   handleChange: (target: any) => void;
   hideLabel?: boolean;
   value?: string | number;
   tag?: string;
-  conf?: any;
+  conf: QrConfig;
 }
 export const InputField = ({
   name,
@@ -47,7 +49,7 @@ export const InputField = ({
         min={min}
         max={max}
         step={step}
-        defaultValue={defaultValue}
+        defaultValue={defaultValue as string}
         value={conf[name]}
         className={`w-full min-w-20 ${style}`}
       />
