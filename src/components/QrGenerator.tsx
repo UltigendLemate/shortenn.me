@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 "use client";
-import { useState } from "react";
-
+import { useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { QRCode } from "react-qrcode-logo";
 import {
@@ -12,26 +12,11 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import html2canvas from "html2canvas";
-import React from "react";
-import { useRef } from "react";
 import { InputField } from "./InputField";
 import { SelectField } from "./SelectInput";
 import { ImageUploadField } from "./ImageUpload";
 import { QrCode } from "lucide-react";
-interface QrGeneratorFieldProps{
-  slug:string|undefined
-
-}
-
-const QrGenerator = ({ slug }:QrGeneratorFieldProps) => {
-  const qrRef = useRef(null);
-  type EcLevel = "L" | "M" | "Q" | "H";
-const ecLevels: EcLevel[] = ["L", "M", "Q", "H"];
-type QrStyle="squares"|"dots"|"fluid";
-type LogoPaddingStyle="square"|"circle";
-
-
-interface QrConfig {
+export interface QrConfig {
   ecLevel: EcLevel;
   size: number;
   quietZone: number;
@@ -50,8 +35,20 @@ interface QrConfig {
   eyeradius_corner_3: number;
   eyeradius_corner_4: number;
 }
+export type EcLevel = "L" | "M" | "Q" | "H";
+export const ecLevels: EcLevel[] = ["L", "M", "Q", "H"];
+export type QrStyle = "squares" | "dots" | "fluid";
+export type LogoPaddingStyle = "square" | "circle";
+interface QrGeneratorFieldProps {
+  slug: string | undefined;
+}
 
-  // const [qrConfig,SetQRconfig]=useState<{[key:string]:any}>({});
+const QrGenerator = ({ slug }: QrGeneratorFieldProps) => {
+  const qrRef = useRef<HTMLDivElement>(null);
+
+
+
+
 
   const [qrConfig, SetQRconfig] = useState<QrConfig>({
     ecLevel: "L",
@@ -72,14 +69,16 @@ interface QrConfig {
     eyeradius_corner_3: 0,
     eyeradius_corner_4: 0,
   });
-  const handleChange = ({ target }: any) => {
-    // if(target.name==="eyeradius_inner"||"eyeradius_outer")
-    SetQRconfig((preState) => ({
-      ...preState,
-      [target.name]: target.value,
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    SetQRconfig((prevState) => ({
+      ...prevState,
+      [name]: value,
     }));
   };
-  const eyeRadiusInput = (id: string) => {
+
+  const eyeRadiusInput = (id: keyof QrConfig) => {
     return (
       <InputField
         name={id}
@@ -97,20 +96,21 @@ interface QrConfig {
       try {
         const canvas = await html2canvas(qrRef.current);
         canvas.toBlob((blob) => {
-          if(blob){const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard.write([item]);
-          toast.success("Qr code copied to clipboard");}
-          else {
-            toast.error("Failed to copy QR Code : Blob is null ")
+          if (blob) {
+            const item = new ClipboardItem({ "image/png": blob });
+            navigator.clipboard.write([item]);
+            toast.success("QR code copied to clipboard");
+          } else {
+            toast.error("Failed to copy QR Code: Blob is null");
           }
         });
-
       } catch (error) {
-        toast.error("Faild to copy QR code");
-        console.error("failed to copy QR code to clipboard", error);
+        toast.error("Failed to copy QR code");
+        console.error("Failed to copy QR code to clipboard", error);
       }
     }
   };
+
   const downloadQRCode = async () => {
     if (qrRef.current) {
       try {
